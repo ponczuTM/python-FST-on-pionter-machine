@@ -101,3 +101,34 @@ def display_tree(node, level=0, label='>'):
         display_tree(node.right, level + 1, 'R')
         print(' ' * 4 * level + label + str(node.val))
         display_tree(node.left, level + 1, 'L')
+
+def search_in_tree(root, search_number, pointer):
+    current = root
+    parent = None
+    steps = 0
+
+    while current is not None:
+        if current.val == search_number:
+            return (current, steps)
+        elif current.val < search_number:
+            parent = current
+            current = current.right
+            steps += 1
+        else:
+            parent = current
+            current = current.left
+            steps += 1
+
+        if parent is not None:
+            if parent.val < search_number and pointer != 1:
+                pointer = 1
+                current = parent
+                parent = None
+                steps += 1
+            elif parent.val > search_number and pointer != -1:
+                pointer = -1
+                current = parent
+                parent = None
+                steps += 1
+
+    return (None, steps)

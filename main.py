@@ -33,3 +33,13 @@ print(sorted_arr, "\n")
 
 mo.insertion_sort_pointer(array)
 print(array, "\n")
+
+search_number = int(input("podaj szukana liczbe: "))
+pointer = int(input("podaj gdzie chcesz miec wskaznik: "))
+
+result, steps = mo.search_in_tree(root, search_number, pointer)
+if result is not None:
+    print(f"Znaleziono liczbę {search_number} w drzewie") # wwierzchołku o wartości {result.val}")
+else:
+    print(f"Liczby {search_number} nie ma w drzewie")
+print(f"Liczba kroków: {steps}")
