@@ -9,27 +9,27 @@ def help(show=None):
         print("e.g. here you executed help(), but you can also execute help(\"show\")")
         print("\nFunctions available in this library:")
 
-def bsort(arr, show=None):
+def bsort(array, show=None):
     if show == 'show':
         print("#function for bubble sort:")
-        print("def sort(arr):")
-        print("    n = len(arr)")
+        print("def sort(array):")
+        print("    n = len(array)")
         print("    for i in range(n):")
         print("        for j in range(0, n-i-1):")
-        print("            if arr[j] > arr[j+1]:")
-        print("                arr[j], arr[j+1] = arr[j+1], arr[j]")
-        print("    return arr")
+        print("            if array[j] > array[j+1]:")
+        print("                array[j], array[j+1] = array[j+1], array[j]")
+        print("    return array")
     elif show is not None:
         print("Invalid argument. Use 'show' to display sorting function.")
     else:
-        n = len(arr)
+        n = len(array)
         for i in range(n):
             for j in range(0, n-i-1):
-                if arr[j] > arr[j+1]:
-                    arr[j], arr[j+1] = arr[j+1], arr[j]
-        return arr
+                if array[j] > array[j+1]:
+                    array[j], array[j+1] = array[j+1], array[j]
+        return array
 
-def test(arr, *args):
+def test(array, *args):
     num_args = len(args)
     if num_args == 0:
         print("Przekazałeś do funkcji tylko tablicę liczb")
