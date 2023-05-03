@@ -132,3 +132,20 @@ def search_in_tree(root, search_number, pointer):
                 steps += 1
 
     return (None, steps)
+
+
+def FST(root, show=None): 
+    if show:
+        print("nice try but there is no code to print :)")
+    elif show is not None:
+        print("Invalid argument. Use 'show' to display sorting function.")
+    else:
+        search_number = int(input("enter the number you are looking for: "))
+        pointer = int(input("enter where you want the pointer: "))
+
+        result, steps = search_in_tree(root, search_number, pointer)
+        if result is not None:
+            print(f"Number {search_number} found in binary tree") # wwierzchołku o wartości {result.val}")
+        else:
+            print(f"Number {search_number} NOT fount in binary tree")
+        print(f"Number of steps: {steps}")
