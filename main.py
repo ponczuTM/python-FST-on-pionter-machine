@@ -1,9 +1,9 @@
 import mroczkowski_library.functions as mo
 
 """
-mo.sort(arr, "test")
+mo.bsort(array, "test")
 print()
-mo.sort(arr, "show")
+mo.bsort(array, "show")
 """
 root = None
 root = mo.insert(root, 50)
@@ -24,13 +24,14 @@ root = mo.insert(root, 7)
 
 #mo.add_standard_edges()
 
-mo.display_tree(root)
-print()
 array = [5, 2, 35656546, 4, 1, 3, 3, 12, 123, 135, 546, 456]
 
+mo.display_tree(root)
+#print()
+
 sorted_arr = mo.bsort(array)
-print(sorted_arr, "\n")
+#print(sorted_arr, "\n")
 
 mo.insertion_sort_pointer(array)
-print(array, "\n")
+#print(array, "\n")
 mo.FST(root)

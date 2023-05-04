@@ -50,21 +50,28 @@ class PointerMachine:
         self.array = array
         self.index = 0
         self.value = None
+        self.counter = 0
+        self.registers = [None] * 4
     
     def get(self):
         self.value = self.array[self.index]
+        self.counter += 1
     
     def set(self, value):
         self.array[self.index] = value
+        self.counter += 1
     
     def go_R(self):
         self.index = self.index + 1
+        self.counter += 1
     
     def go_L(self):
         self.index = self.index - 1
+        self.counter += 1
     
     def is_end(self):
         return self.index >= len(self.array)
+
 
 def insertion_sort_pointer(array):
     machine = PointerMachine(array)
