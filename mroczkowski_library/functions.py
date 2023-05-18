@@ -161,6 +161,7 @@ def search_in_tree(root, last_dir, search_number, current):
             L7
 """
 
+"""
 def save_binary_tree_to_array(root):
     def preorder_traversal(node):
         if node is None:
@@ -179,6 +180,27 @@ def save_binary_tree_to_array(root):
     array = []
     preorder_traversal(root)  # Start pre-order traversal
     return array
+"""
+
+def save_binary_tree_to_array(root):
+    def preorder_traversal(node, parent_index=None):
+        if node is None:
+            return -1  # Return -1 for non-existent node
+        index = len(array) // 4
+        # Temporarily store None for left and right indices and parent index. We'll fill these in after the recursive calls.
+        array.extend([node.val, None, None, None if parent_index is None else (index - parent_index) * 4])
+        left_index = preorder_traversal(node.left, index)
+        right_index = preorder_traversal(node.right, index)
+        # Calculate steps from current node to its children
+        if left_index != -1:
+            array[index * 4 + 1] = (left_index - index) * 4 - 1
+        if right_index != -1:
+            array[index * 4 + 2] = (right_index - index) * 4 - 2
+        return index
+    array = []
+    preorder_traversal(root)  # Start pre-order traversal
+    return array
+
 
 
 def FST(root, show=None): 
