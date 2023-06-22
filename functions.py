@@ -53,6 +53,9 @@ class PointerMachine:
     def set(self, value):
         self.array[self.index] = value
         self.counter += 1
+    # def get_finger(self, index):
+    #     self.value = self.fingers[index]
+    #     self.counter += 1
     def set_finger(self, index):
         self.fingers.add(index)
         self.counter += 1
@@ -62,14 +65,14 @@ class PointerMachine:
     def go_L(self):
         self.index = self.index - 1
         self.counter += 1
-    def go_U(self):
-        self.index = self.index - len(self.registers)
-        self.counter += 1
-    def go_D(self):
-        self.index = self.index + len(self.registers)
-        self.counter += 1
-    def is_end(self):
-        return self.index >= len(self.array)
+    # def go_U(self):
+    #     self.index = self.index - len(self.registers)
+    #     self.counter += 1
+    # def go_D(self):
+    #     self.index = self.index + len(self.registers)
+    #     self.counter += 1
+    #def is_end(self):
+        #return self.index >= len(self.array)
 
     def move(self, steps):
         if self.value is None:
@@ -139,6 +142,19 @@ class PointerMachine:
         #number - szukana
         #self.value - wskazywana
 
+"""
+def insertion_sort_pointer(array):
+    machine = PointerMachine(array)
+    for i in range(1, len(array)):
+        machine.index = i
+        machine.get()
+        while machine.index > 0 and machine.array[machine.index-1] > machine.value:
+            machine.array[machine.index] = machine.array[machine.index-1]
+            machine.go_L()
+        machine.array[machine.index] = machine.value
+"""
+
+###############################
 
 class Node:
     def __init__(self, key):
@@ -163,6 +179,69 @@ def display_tree(node, level=0, label='>'):
         print(' ' * 4 * level + label + str(node.val))
         display_tree(node.left, level + 1, 'L')
 
+"""
+                    R96
+                R89      <-   P
+                    L78
+            R75
+                R73
+            L68
+                    L53
+        50
+                    R47
+                R37         30
+                    L29
+            L25             27
+                    R22
+                L16
+                    L7    <-   S
+"""
+# parent > search - Z (ze względu na dół)
+
+# left < search
+# pointer > search - Z (za wzgledu na if right > serach)
+# right nas nie obchodzi bo search < pionter (na bank w lewo)
+# go to left
+
+
+# parent > search - Z (ze względu na dół)
+# right < search - Z
+# pointer < search - Z
+# left nas nie obchodzi bo search > pionter (na bank w prawo)
+# go to right - Z
+
+
+
+# parent > search - Z (ze względu na dół) - to nie zadziała :(
+# left > search
+# go to parent
+
+# parent < search - Z
+# right < search - nieistotne
+# go to parent - Z
+
+
+
+"""
+def save_binary_tree_to_array(root):
+    def preorder_traversal(node):
+        if node is None:
+            return -1  # Return -1 for non-existent node
+        index = len(array) // 3
+        # Temporarily store None for left and right indices. We'll fill these in after the recursive calls.
+        array.extend([node.val, None, None])
+        left_index = preorder_traversal(node.left)
+        right_index = preorder_traversal(node.right)
+        # Calculate steps from current node to its children
+        if left_index != -1:
+            array[index * 3 + 1] = (left_index - index) * 3 - 1
+        if right_index != -1:
+            array[index * 3 + 2] = (right_index - index) * 3 - 2
+        return index
+    array = []
+    preorder_traversal(root)  # Start pre-order traversal
+    return array
+"""
 
 def save_binary_tree_to_array(root):
     def preorder_traversal(node, parent_index=None):
@@ -182,11 +261,10 @@ def save_binary_tree_to_array(root):
     preorder_traversal(root)
     return array
 
+
 def FST(root, show=None): 
     if show:
-        with open("files/FingerSearchTrees.txt", "r") as file:
-            content = file.read()
-            print(content)
+        print("nice try but there is no code to print :)")
     elif show is not None:
         print("Invalid argument. Use 'show' to display function.")
     else:
@@ -201,6 +279,9 @@ def FST(root, show=None):
 
             result = machine.find(search_number)
             print(result)
+            # result, last_dir, steps = search_in_tree(root, last_dir, pointer, None)
+            # print("--------------------")
+            # result, last_dir, steps = search_in_tree(root, last_dir, search_number, result)
 
             
             if result == True:
