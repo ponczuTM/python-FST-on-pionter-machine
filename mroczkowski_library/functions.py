@@ -72,15 +72,12 @@ class PointerMachine:
         return self.index >= len(self.array)
 
     def move(self, steps):
-        if self.value is None:
-            return False
         while steps > 0:
             self.go_R()
             steps -= 1
         while steps < 0:
             self.go_L()
             steps += 1
-        return True
     
     def get_closest_finger(self, number):
         closest_finger = None
@@ -89,10 +86,11 @@ class PointerMachine:
             # Get finger index in the array
             # self.get_finger(finger)
             # Move to the index
+            print(f"index before: {self.index}")
             self.move(finger - self.index)
             # Get finger value
             self.get()
-            print(f"finger: {finger}, value: {self.value}")
+            print(f"index: {self.index}, finger: {finger}, value: {self.value}")
 
             if (closest_finger is None or abs(self.value - number) < smallest_distance):
                 closest_finger = finger
@@ -110,6 +108,7 @@ class PointerMachine:
             self.get()
             if self.value is None:
                 print(f"steps: {steps}")
+                self.move(-self.index)
                 return False
             if self.value == number:
                 print(f"steps: {steps}")
@@ -118,6 +117,9 @@ class PointerMachine:
             if number < self.value:
                 self.go_R()
                 self.get()
+                if self.value is None:
+                    self.move(-self.index)
+                    return False
                 self.move(self.value)
                 self.get()
                 steps += 1
@@ -127,6 +129,9 @@ class PointerMachine:
                 self.go_R()
                 self.go_R()
                 self.get()
+                if self.value is None:
+                    self.move(-self.index)
+                    return False
                 self.move(self.value)
                 self.get()
                 steps += 1
@@ -139,6 +144,23 @@ class PointerMachine:
         #number - szukana
         #self.value - wskazywana
 
+"""
+            R96
+        R89
+            L78
+    R75
+            R73
+        L68
+            L53
+>50
+            R47
+        R37
+            L29
+    L25
+            R22
+        L16
+            L7
+"""
 
 class Node:
     def __init__(self, key):
@@ -204,7 +226,7 @@ def FST(root, show=None):
 
             
             if result == True:
-                print(f"Number {search_number} found in binary tree") # w wierzchołku o wartości {result.val}")
+                print(f"Number {search_number} ✅ found in binary tree") # w wierzchołku o wartości {result.val}")
             else:
-                print(f"Number {search_number} NOT found in binary tree")
+                print(f"Number {search_number} ❌ NOT found in binary tree")
         #print(f"Number of steps: {steps}")
