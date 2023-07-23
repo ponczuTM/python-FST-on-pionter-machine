@@ -86,20 +86,20 @@ class PointerMachine:
             # Get finger index in the array
             # self.get_finger(finger)
             # Move to the index
-            print(f"index before: {self.index}")
+            #print(f"index before: {self.index}")
             self.move(finger - self.index)
             # Get finger value
             self.get()
-            print(f"index: {self.index}, finger: {finger}, value: {self.value}")
+            #print(f"index: {self.index}, finger: {finger}, value: {self.value}")
 
             if (closest_finger is None or abs(self.value - number) < smallest_distance):
                 closest_finger = finger
                 smallest_distance = abs(self.value - number)
         self.move(closest_finger - self.index)
         self.get()
-        print(f"closest finger: {closest_finger}, value: {self.value}")
+        #print(f"closest finger: {closest_finger}, value: {self.value}")
 
-    def find(self, number):
+    def find_FST(self, number):
         steps = 0
         # Find the closest finger
         self.get_closest_finger(number)
@@ -138,7 +138,42 @@ class PointerMachine:
                 if self.value is not None:
                     self.set_finger(self.index)
 
-        print(f"outside loop, steps: {steps}")
+        print(f"steps: {steps}")
+        return True
+        
+        #number - szukana
+        #self.value - wskazywana
+
+
+    def find_BST(self, number):
+        steps = 0
+        print(self.value) 
+        while number != self.value:
+            self.get()
+            if number < self.value:
+                self.go_R()
+                self.get()
+                if self.value is None:
+                    self.move(-self.index)
+                    return False
+                else:
+                    self.move(self.value)
+                    self.get()
+                    steps += 1
+            elif number > self.value:
+                self.go_R()
+                self.go_R()
+                self.get()
+                if self.value is None:
+                    self.move(-self.index)
+                    return False
+                else:
+                    self.move(self.value)
+                    self.get()
+                    steps += 1
+        print(f"steps: {steps}")
+        self.move(-self.index)
+        self.get()
         return True
         
         #number - szukana
@@ -220,11 +255,31 @@ def FST(root, show=None):
             search_number = int(input("enter the number you are looking for: "))
             if search_number == 0:
                 break
+            result = machine.find_FST(search_number)            
+            if result == True:
+                print(f"Number {search_number} ✅ found in binary tree") # w wierzchołku o wartości {result.val}")
+            else:
+                print(f"Number {search_number} ❌ NOT found in binary tree")
+        #print(f"Number of steps: {steps}")
 
-            result = machine.find(search_number)
-            print(result)
 
-            
+def BST(root, show=None): 
+    if show:
+        with open("files/BinarySearchTrees.txt", "r") as file:
+            content = file.read()
+            print(content)
+    elif show is not None:
+        print("Invalid argument. Use 'show' to display function.")
+    else:
+
+        machine = PointerMachine(save_binary_tree_to_array(root))
+
+        while True:
+            print("--------------------")
+            search_number = int(input("enter the number you are looking for: "))
+            if search_number == 0:
+                break
+            result = machine.find_BST(search_number)            
             if result == True:
                 print(f"Number {search_number} ✅ found in binary tree") # w wierzchołku o wartości {result.val}")
             else:

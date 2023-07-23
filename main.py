@@ -16,13 +16,7 @@ print(array)
 mo.bsort(array, "show")
 """
 
-"""
-#uzycie funkcji zamieniajacej tablice na drzewo binarne
-array=[50, 25, 75, 16, 37, 68, 89, 96, 78, 73, 53, 47, 29, 22, 7]
-mo.array_to_tree()
-"""
 
-"""
 root = None
 root = mo.insert(root, 50)
 root = mo.insert(root, 25)
@@ -39,20 +33,23 @@ root = mo.insert(root, 47)
 root = mo.insert(root, 29)
 root = mo.insert(root, 22)
 root = mo.insert(root, 7)
-"""
 
+test_arr = mo.save_binary_tree_to_array(root)
+print(test_arr)
+"""
 n = int(input("Podaj liczbę n: "))
 m = (2 ** n) - 1
 root = None
 print(m)
-with open("numbers.txt", "w") as file:
-    for _ in range(m):
-        p = random.randint(1, 101)
-        print(f"{p}")
-        root = mo.insert(root, p)
-        file.write(str(p) + "\n")
+#with open("numbers.txt", "w") as file:
+for _ in range(m):
+    p = random.randint(1, 101)
+    print(f"{p}")
+    root = mo.insert(root, p)
+        #file.write(str(p) + "\n")
 
-os.system("cls")
+mo.display_tree(root)
+"""
 """
 print("###############################")
 array_from_tree = mo.save_binary_tree_to_array(root)
@@ -66,6 +63,10 @@ mo.display_tree(root)
 #mo.insertion_sort_pointer(array)
 #print(array, "\n")
 #mo.FST(root, "show")
-mo.FST(root)
+choice = int(input())
+if choice == 1:
+    mo.FST(root)
+if choice == 2:
+    mo.BST(root)
 
 print("--------------------")
