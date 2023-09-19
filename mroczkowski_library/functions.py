@@ -45,6 +45,7 @@ class PointerMachine:
         self.index = 0
         self.value = None
         self.counter = 0
+        self.registers = []
         self.fingers = set()
         self.fingers.add(0)
     def get(self):
@@ -62,6 +63,7 @@ class PointerMachine:
     def go_L(self):
         self.index = self.index - 1
         self.counter += 1
+        
     def go_U(self):
         self.index = self.index - len(self.registers)
         self.counter += 1
@@ -100,6 +102,7 @@ class PointerMachine:
         #print(f"closest finger: {closest_finger}, value: {self.value}")
 
     def find_FST(self, number):
+        self.counter = 0
         steps = 0
         # Find the closest finger
         self.get_closest_finger(number)
@@ -107,17 +110,18 @@ class PointerMachine:
         while number != self.value:
             self.get()
             if self.value is None:
-                print(f"steps: {steps}")
+                print(f"steps in algorithm: {steps}")
                 self.move(-self.index)
                 return False
-            if self.value == number:
-                print(f"steps: {steps}")
-                return True
+            #if self.value == number:
+            #    print(f"steps in algorithm: {steps}")
+            #    return True
 
             if number < self.value:
                 self.go_R()
                 self.get()
                 if self.value is None:
+                    print(f"steps in algorithm: {steps}")
                     self.move(-self.index)
                     return False
                 self.move(self.value)
@@ -130,6 +134,7 @@ class PointerMachine:
                 self.go_R()
                 self.get()
                 if self.value is None:
+                    print(f"steps in algorithm: {steps}")
                     self.move(-self.index)
                     return False
                 self.move(self.value)
@@ -138,7 +143,7 @@ class PointerMachine:
                 if self.value is not None:
                     self.set_finger(self.index)
 
-        print(f"steps: {steps}")
+        print(f"steps in algorithm: {steps}")
         return True
         
         #number - szukana
@@ -146,6 +151,7 @@ class PointerMachine:
 
 
     def find_BST(self, number):
+        self.counter = 0
         steps = 0
         print(self.value) 
         while number != self.value:
@@ -171,7 +177,29 @@ class PointerMachine:
                     self.move(self.value)
                     self.get()
                     steps += 1
-        print(f"steps: {steps}")
+        print(f"steps in algorithm: {steps}")
+        self.move(-self.index)
+        self.get()
+        return True
+    
+    
+    def find_DFS(self, number):
+        self.counter = 0
+        steps = 0
+        print(self.value) 
+        self.get()        
+        while number != self.value:
+            if self.value == "#":
+                self.move(-self.index)
+                print(f"steps in algorithm: {steps}")
+                return False
+            self.go_R()
+            self.go_R()
+            self.go_R()
+            self.go_R()
+            self.get()
+            steps+=1
+        print(f"steps in algorithm: {steps}")
         self.move(-self.index)
         self.get()
         return True
@@ -179,31 +207,12 @@ class PointerMachine:
         #number - szukana
         #self.value - wskazywana
 
-"""
-            R96
-        R89
-            L78
-    R75
-            R73
-        L68
-            L53
->50
-            R47
-        R37
-            L29
-    L25
-            R22
-        L16
-            L7
-"""
-
 class Node:
     def __init__(self, key):
         self.left = None
         self.right = None
         self.val = key
  
-
 def insert(root, key):
     if root is None:
         return Node(key)
@@ -237,6 +246,7 @@ def save_binary_tree_to_array(root):
         return index
     array = []
     preorder_traversal(root)
+    array.append("#")
     return array
 
 def FST(root, show=None): 
@@ -255,12 +265,12 @@ def FST(root, show=None):
             search_number = int(input("enter the number you are looking for: "))
             if search_number == 0:
                 break
-            result = machine.find_FST(search_number)            
+            result = machine.find_FST(search_number)   
+            print(f"Pointer Machine operations: {machine.counter}")           
             if result == True:
                 print(f"Number {search_number} ✅ found in binary tree") # w wierzchołku o wartości {result.val}")
             else:
                 print(f"Number {search_number} ❌ NOT found in binary tree")
-        #print(f"Number of steps: {steps}")
 
 
 def BST(root, show=None): 
@@ -279,9 +289,52 @@ def BST(root, show=None):
             search_number = int(input("enter the number you are looking for: "))
             if search_number == 0:
                 break
-            result = machine.find_BST(search_number)            
+            result = machine.find_BST(search_number)    
+            print(f"Pointer Machine operations: {machine.counter}")        
             if result == True:
                 print(f"Number {search_number} ✅ found in binary tree") # w wierzchołku o wartości {result.val}")
             else:
                 print(f"Number {search_number} ❌ NOT found in binary tree")
-        #print(f"Number of steps: {steps}")
+
+
+def DFS(root, show=None): 
+    if show:
+        with open("files/BinarySearchTrees.txt", "r") as file:
+            content = file.read()
+            print(content)
+    elif show is not None:
+        print("Invalid argument. Use 'show' to display function.")
+    else:
+
+        machine = PointerMachine(save_binary_tree_to_array(root))
+
+        while True:
+            print("--------------------")
+            search_number = int(input("enter the number you are looking for: "))
+            if search_number == 0:
+                break
+            result = machine.find_DFS(search_number)   
+            print(f"Pointer Machine operations: {machine.counter}")           
+            if result == True:
+                print(f"Number {search_number} ✅ found in binary tree") # w wierzchołku o wartości {result.val}")
+            else:
+                print(f"Number {search_number} ❌ NOT found in binary tree")
+
+
+"""
+            R96
+        R89
+            L78
+    R75
+            R73
+        L68
+            L53
+>50
+            R47
+        R37
+            L29
+    L25
+            R22
+        L16
+            L7
+"""

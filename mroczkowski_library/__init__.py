@@ -1,6 +1,1 @@
-from .functions import insert
-from .functions import FST
-from .functions import BST
-from .functions import save_binary_tree_to_array
-from .functions import bsort
-from .functions import display_tree
+from .functions import help, insert, FST, BST, DFS, save_binary_tree_to_array, test, bsort, display_tree
