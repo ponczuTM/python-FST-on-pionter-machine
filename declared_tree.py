@@ -19,8 +19,6 @@ root = mo.insert(root, 29)
 root = mo.insert(root, 22)
 root = mo.insert(root, 7)
 
-
-
 choice = input("which algorithm do you choose?:\nFST: 1 / F / FST\nBST: 2 / B / BST\nDFS: 3 / D / DFS\n").upper()
 if choice == "1" or choice == "F" or choice == "FST":
     mo.FST(root)
