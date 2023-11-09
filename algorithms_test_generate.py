@@ -1,28 +1,23 @@
 import mroczkowski_library as mo
-import os
-import random
-os.system("cls")
+import time
 
-n = int(input("enter the depth of the binary tree: "))
-depth = (2 ** n) - 1
-root = None
-print(depth)
-with open("depth.txt", "w") as file:
-    file.write(str(depth))
+# Rozpocznij pomiar czasu
+start_time = time.time()
 
-print("---------------")
-print("---------------")
-print("---------------")
-for _ in range(depth):
-    p = random.randint(1, 101)
-    root = mo.insert(root, p)
+i=0
+a=1
+while i<20000:
+    print(i)
+    i+=1
+# Zakończ pomiar czasu
+end_time = time.time()
 
-choice = input("which algorithm do you choose?:\nFST: 1 / F / FST\nBST: 2 / B / BST\nDFS: 3 / D / DFS\n").upper()
-if choice == "1" or choice == "F" or choice == "FST":
-    mo.FST(root)
-elif choice == "2" or choice == "B" or choice == "BST":
-    mo.BST(root)
-elif choice == "3" or choice == "D" or choice == "DFS":
-    mo.DFS(root)
-else:
-    print("wrong choice. Try again")
+# Oblicz czas trwania obliczeń
+elapsed_time = end_time - start_time
+
+# Wyświetl wynik i czas wykonania
+print(f"Wynik: {a}")
+print(f"Czas wykonania: {elapsed_time} sekund")
+
+
+

@@ -85,38 +85,25 @@ class PointerMachine:
         closest_finger = None
         smallest_distance = None
         for finger in self.fingers:
-            # Get finger index in the array
-            # self.get_finger(finger)
-            # Move to the index
-            #print(f"index before: {self.index}")
             self.move(finger - self.index)
-            # Get finger value
             self.get()
-            #print(f"index: {self.index}, finger: {finger}, value: {self.value}")
-
             if (closest_finger is None or abs(self.value - number) < smallest_distance):
                 closest_finger = finger
                 smallest_distance = abs(self.value - number)
         self.move(closest_finger - self.index)
         self.get()
-        #print(f"closest finger: {closest_finger}, value: {self.value}")
-
+        
     def find_FST(self, number):
         self.counter = 0
         steps = 0
         # Find the closest finger
         self.get_closest_finger(number)
-        
         while number != self.value:
             self.get()
             if self.value is None:
                 print(f"steps in algorithm: {steps}")
                 self.move(-self.index)
                 return False
-            #if self.value == number:
-            #    print(f"steps in algorithm: {steps}")
-            #    return True
-
             if number < self.value:
                 self.go_R()
                 self.get()
@@ -142,18 +129,14 @@ class PointerMachine:
                 steps += 1
                 if self.value is not None:
                     self.set_finger(self.index)
-
         print(f"steps in algorithm: {steps}")
         return True
-        
-        #number - szukana
-        #self.value - wskazywana
 
 
     def find_BST(self, number):
         self.counter = 0
         steps = 0
-        print(self.value) 
+        #print(self.value) 
         while number != self.value:
             self.get()
             if number < self.value:
@@ -186,7 +169,7 @@ class PointerMachine:
     def find_DFS(self, number):
         self.counter = 0
         steps = 0
-        print(self.value) 
+        #print(self.value) 
         self.get()        
         while number != self.value:
             if self.value == "#":
@@ -229,7 +212,6 @@ def display_tree(node, level=0, label='>'):
         print(' ' * 4 * level + label + str(node.val))
         display_tree(node.left, level + 1, 'L')
 
-
 def save_binary_tree_to_array(root):
     def preorder_traversal(node, parent_index=None):
         if node is None:
@@ -249,92 +231,183 @@ def save_binary_tree_to_array(root):
     array.append("#")
     return array
 
-def FST(root, show=None): 
-    if show:
-        with open("files/FingerSearchTrees.txt", "r") as file:
-            content = file.read()
-            print(content)
-    elif show is not None:
-        print("Invalid argument. Use 'show' to display function.")
-    else:
-
-        machine = PointerMachine(save_binary_tree_to_array(root))
-
+def find(root, type, txt):
+    machine = PointerMachine(save_binary_tree_to_array(root))
+    if(txt=="No"):
         while True:
             print("--------------------")
             search_number = int(input("enter the number you are looking for: "))
             if search_number == 0:
                 break
-            result = machine.find_FST(search_number)   
-            print(f"Pointer Machine operations: {machine.counter}")           
-            if result == True:
-                print(f"Number {search_number} ✅ found in binary tree") # w wierzchołku o wartości {result.val}")
-            else:
-                print(f"Number {search_number} ❌ NOT found in binary tree")
-
-
-def BST(root, show=None): 
-    if show:
-        with open("files/BinarySearchTrees.txt", "r") as file:
-            content = file.read()
-            print(content)
-    elif show is not None:
-        print("Invalid argument. Use 'show' to display function.")
-    else:
-
-        machine = PointerMachine(save_binary_tree_to_array(root))
-
-        while True:
-            print("--------------------")
-            search_number = int(input("enter the number you are looking for: "))
-            if search_number == 0:
-                break
-            result = machine.find_BST(search_number)    
+            if(type=="FST"):
+                result = machine.find_FST(search_number)    
+            elif(type=="BST"):
+                result = machine.find_BST(search_number)    
+            elif(type=="DFS"):
+                result = machine.find_DFS(search_number)    
             print(f"Pointer Machine operations: {machine.counter}")        
             if result == True:
                 print(f"Number {search_number} ✅ found in binary tree") # w wierzchołku o wartości {result.val}")
             else:
                 print(f"Number {search_number} ❌ NOT found in binary tree")
+    elif(txt=="Yes"):
+        try:
+            #filename = input("enter input file name: ")
+            filename="input.txt"
+            with open(filename, 'r') as file:
+                numbers_from_txt = [int(num.strip()) for num in file.read().split(',')]
+            for search_number in numbers_from_txt:
+                if search_number == 0:
+                    break
+                if(type=="FST"):
+                    result = machine.find_FST(search_number)    
+                elif(type=="BST"):
+                    result = machine.find_BST(search_number)    
+                elif(type=="DFS"):
+                    result = machine.find_DFS(search_number)
+                print(f"Pointer Machine operations: {machine.counter}")           
+                if result == True:
+                    print(f"Number {search_number} ✅ found in binary tree")
+                else:
+                    print(f"Number {search_number} ❌ NOT found in binary tree")
 
+        except FileNotFoundError:
+            print("Plik 'input.txt' nie został znaleziony.")
+            numbers_from_txt = []
 
-def DFS(root, show=None): 
-    if show:
-        with open("files/BinarySearchTrees.txt", "r") as file:
+def FST(root, show=None): 
+    if show == 'show':
+        with open("files/FST.txt", "r") as file:
             content = file.read()
             print(content)
+    elif show == 'txt_input':
+        find(root, "FST", "Yes")
     elif show is not None:
         print("Invalid argument. Use 'show' to display function.")
     else:
+        find(root, "FST", "No")
 
-        machine = PointerMachine(save_binary_tree_to_array(root))
+def BST(root, show=None): 
+    if show == 'show':
+        with open("files/BST.txt", "r") as file:
+            content = file.read()
+            print(content)
+    elif show == 'txt_input':
+        find(root, "BST", "Yes")
+    elif show is not None:
+        print("Invalid argument. Use 'show' to display function.")
+    else:
+        find(root, "BST", "No")
 
-        while True:
-            print("--------------------")
-            search_number = int(input("enter the number you are looking for: "))
-            if search_number == 0:
-                break
-            result = machine.find_DFS(search_number)   
-            print(f"Pointer Machine operations: {machine.counter}")           
-            if result == True:
-                print(f"Number {search_number} ✅ found in binary tree") # w wierzchołku o wartości {result.val}")
-            else:
-                print(f"Number {search_number} ❌ NOT found in binary tree")
+def DFS(root, show=None): 
+    if show == 'show':
+        with open("files/DFS.txt", "r") as file:
+            content = file.read()
+            print(content)
+    elif show == 'txt_input':
+        find(root, "DFS", "Yes")
+    elif show is not None:
+        print("Invalid argument. Use 'show' to display function.")
+    else:
+        find(root, "DFS", "No")
+
+def find_tree_depth(node):
+    if node is None:
+        return 0
+    else:
+        left_depth = find_tree_depth(node.left)
+        right_depth = find_tree_depth(node.right)
+        return max(left_depth, right_depth) + 1
+
+#depth = find_tree_depth(root)
+#print(f"Głębokość drzewa wynosi: {depth}")
+
 
 
 """
-            R96
-        R89
-            L78
-    R75
-            R73
-        L68
-            L53
->50
-            R47
-        R37
-            L29
-    L25
-            R22
-        L16
-            L7
+mam algorytm który przeszukuje drzewo. Chciałbym zrobić GUI w którym użytkownik zaznacza które liczby mają zostać wyszukane w drzewie, a następnie po kliknięciu "search" okno ma się zamknąć, algorytm wykonać i otworzyć GUI ponownie, ale tym razem w taki sposób, aby wartości które znaleziono algorytmem w drzewie zaznaczone były na zielono, a te których nie ma na czerwono. problem polega na tym, że w funkcji która odpowiada za wyszukiwanie w drzewie ma w sobie pętle while i ma print() czy wartość została znaleziona czy nie i nic nie zwraca. Czy wiesz jak rozwiązać ten problem aby program "wiedział" które zostały znalezione wartości a które nie? Nie chciałbym modyfikować mojej funkcji tylko pod gui.
+
+Obecnie gui działa tak, że zaznaczając jakieś wartości, dodawane są one do tablicy. Następnie wartości (po zamknięciu) zapisywane sa do pliku input.txt, a następnie uruchamiany jest mój algorytm (który pobiera liczby jedna po drugiej z input.txt).
+
+Załóżmy że otworzyłem GUI i wybrałem liczby 7, 49, 50.
+po kliknięciu "check" w konsoli mam napisane: Zaznaczone liczby: [7, 49, 50]
+po kliknięciu "search" mam taki output:
+steps in algorithm: 3
+Pointer Machine operations: 26      
+Number 7 ✅ found in binary tree     
+steps in algorithm: 3
+Pointer Machine operations: 123     
+Number 49 ❌ NOT found in binary tree
+steps in algorithm: 0
+Pointer Machine operations: 63
+Number 50 ✅ found in binary tree
+
+dasz radę zrobić tak aby użytkownik zaznaczając liczbę od razu zaznaczała się na kolor zielony jeśli liczba jest w drzewie lub na kolor czerwony jeśli liczby nie ma w drzewie?
+
+mój obecny kod wygląda tak:
+import mroczkowski_library as mo
+import os
+import tkinter as tk
+from tkinter import font
+root = None
+root = mo.insert(root, 50)
+root = mo.insert(root, 25)
+root = mo.insert(root, 75)
+root = mo.insert(root, 16)
+root = mo.insert(root, 37)
+root = mo.insert(root, 68)
+root = mo.insert(root, 89)
+root = mo.insert(root, 96)
+root = mo.insert(root, 78)
+root = mo.insert(root, 73)
+root = mo.insert(root, 53)
+root = mo.insert(root, 47)
+root = mo.insert(root, 29)
+root = mo.insert(root, 22)
+root = mo.insert(root, 7)
+
+def handle_button_click(value):
+    if value in numbers:
+        numbers.remove(value)
+        buttons[value]["state"] = tk.NORMAL
+        buttons[value]["bg"] = "SystemButtonFace"
+    else:
+        numbers.append(value)
+        buttons[value]["state"] = tk.DISABLED
+        buttons[value]["bg"] = "lightblue"
+
+
+def check_numbers():
+    print("Zaznaczone liczby:", numbers)
+    
+def exit_app():
+    r.destroy()
+numbers = []
+r = tk.Tk()
+r.title("GUI z przyciskami")
+frame = tk.Frame(r)
+frame.pack()
+buttons = {}
+for i in range(1, 101):
+    if i == 0:
+        continue
+    row, col = divmod(i - 1, 20)
+    row = abs(row)
+    buttons[i] = tk.Button(frame, text=str(i), command=lambda i=i: handle_button_click(i), font=font.Font(size=20))
+    buttons[i].grid(row=row, column=col)
+    buttons[i]["state"] = tk.NORMAL
+    buttons[i]["width"] = 3
+    buttons[i]["height"] = 1 
+check_button = tk.Button(r, text="Check", command=check_numbers, width=8)
+check_button.pack()
+exit_button = tk.Button(r, text="Search", command=exit_app, width=8)
+exit_button.pack()
+r.mainloop()
+
+
+with open('input.txt', 'w') as file:
+    numbers_str = ', '.join(map(str, numbers))
+    file.write(numbers_str)
+    
+mo.FST(root, "txt_input")
 """
