@@ -1,0 +1,6 @@
+closest = abs(search - closestValue)
+for each element in array:
+    current = abs(search - element)
+    if current < closest:
+        closest = current
+        closestValue = element

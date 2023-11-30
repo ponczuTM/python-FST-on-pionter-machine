@@ -1,7 +1,16 @@
 import mroczkowski_library as mo
 #mo.help()
 import os
+from colorama import Fore
 os.system("cls")
+print(Fore.BLUE)
+
+from colorama import init, Fore, Style
+init()
+print(f"{Style.BRIGHT}{Fore.CYAN}Tekst pogrubiony")
+
+
+
 root = None
 root = mo.insert(root, 50)
 root = mo.insert(root, 25)

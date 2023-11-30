@@ -63,16 +63,13 @@ class PointerMachine:
     def go_L(self):
         self.index = self.index - 1
         self.counter += 1
-        
+        """
     def go_U(self):
         self.index = self.index - len(self.registers)
         self.counter += 1
     def go_D(self):
         self.index = self.index + len(self.registers)
-        self.counter += 1
-    def is_end(self):
-        return self.index >= len(self.array)
-
+        """
     def move(self, steps):
         while steps > 0:
             self.go_R()
@@ -85,18 +82,15 @@ class PointerMachine:
         closest_finger = None
         smallest_distance = None
         for finger in self.fingers:
-            self.move(finger - self.index)
             self.get()
             if (closest_finger is None or abs(self.value - number) < smallest_distance):
                 closest_finger = finger
                 smallest_distance = abs(self.value - number)
-        self.move(closest_finger - self.index)
         self.get()
         
     def find_FST(self, number):
         self.counter = 0
         steps = 0
-        # Find the closest finger
         self.get_closest_finger(number)
         while number != self.value:
             self.get()
@@ -136,7 +130,6 @@ class PointerMachine:
     def find_BST(self, number):
         self.counter = 0
         steps = 0
-        #print(self.value) 
         while number != self.value:
             self.get()
             if number < self.value:
@@ -161,15 +154,14 @@ class PointerMachine:
                     self.get()
                     steps += 1
         print(f"steps in algorithm: {steps}")
-        self.move(-self.index)
-        self.get()
+        #self.move(-self.index)
+        #self.get()
         return True
     
     
     def find_DFS(self, number):
         self.counter = 0
         steps = 0
-        #print(self.value) 
         self.get()        
         while number != self.value:
             if self.value == "#":
@@ -186,9 +178,6 @@ class PointerMachine:
         self.move(-self.index)
         self.get()
         return True
-        
-        #number - szukana
-        #self.value - wskazywana
 
 class Node:
     def __init__(self, key):
