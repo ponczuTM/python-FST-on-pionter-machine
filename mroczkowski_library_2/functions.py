@@ -46,7 +46,10 @@ class PointerMachine:
         self.value = None
         self.counter = 0
         self.registers = []
-        self.fingers = set()
+        self.fingers = set() # fast lookup, slow iteration + no repeats
+        # list slow lookup, fast iteration
+        # bloom filter: to check if element can be in the set, false positive
+        # bloom filter for values at fingers
         self.fingers.add(0)
     def get(self):
         self.value = self.array[self.index]
@@ -101,14 +104,14 @@ class PointerMachine:
         while number != self.value:
             self.get()
             if self.value is None:
-                print(f"steps in algorithm: {steps}")
+                #print(f"steps in algorithm: {steps}") [u]
                 self.move(-self.index)
                 return False
             if number < self.value:
                 self.go_R()
                 self.get()
                 if self.value is None:
-                    print(f"steps in algorithm: {steps}")
+                    #print(f"steps in algorithm: {steps}") [u]
                     self.move(-self.index)
                     return False
                 self.move(self.value)
@@ -121,7 +124,7 @@ class PointerMachine:
                 self.go_R()
                 self.get()
                 if self.value is None:
-                    print(f"steps in algorithm: {steps}")
+                    #print(f"steps in algorithm: {steps}")[u]
                     self.move(-self.index)
                     return False
                 self.move(self.value)
@@ -129,7 +132,7 @@ class PointerMachine:
                 steps += 1
                 if self.value is not None:
                     self.set_finger(self.index)
-        print(f"steps in algorithm: {steps}")
+        #print(f"steps in algorithm: {steps}") [u]
         return True
 
 
@@ -159,7 +162,7 @@ class PointerMachine:
                     self.move(self.value)
                     self.get()
                     steps += 1
-        print(f"steps in algorithm: {steps}")
+        #print(f"steps in algorithm: {steps}") [u]
         #self.move(-self.index)
         #self.get()
         return True
@@ -172,7 +175,7 @@ class PointerMachine:
         while number != self.value:
             if self.value == "#":
                 self.move(-self.index)
-                print(f"steps in algorithm: {steps}")
+                #print(f"steps in algorithm: {steps}") [u]
                 return False
             self.go_R()
             self.go_R()
@@ -180,7 +183,7 @@ class PointerMachine:
             self.go_R()
             self.get()
             steps+=1
-        print(f"steps in algorithm: {steps}")
+        #print(f"steps in algorithm: {steps}") [u]
         self.move(-self.index)
         self.get()
         return True
@@ -240,11 +243,13 @@ def find(root, type, txt):
                 result = machine.find_BST(search_number)    
             elif(type=="DFS"):
                 result = machine.find_DFS(search_number)    
-            print(f"Pointer Machine operations: {machine.counter}")        
+            #print(f"Pointer Machine operations: {machine.counter}")    [u]    
             if result == True:
-                print(f"Number {search_number} ✅ found in binary tree") # w wierzchołku o wartości {result.val}")
+                #print(f"Number {search_number} ✅ found in binary tree") [u]# w wierzchołku o wartości {result.val}")
+                a=1
             else:
-                print(f"Number {search_number} ❌ NOT found in binary tree")
+                #print(f"Number {search_number} ❌ NOT found in binary tree")[u]
+                a=2
     elif(txt=="Yes"):
         try:
             #filename = input("enter input file name: ")
@@ -261,12 +266,13 @@ def find(root, type, txt):
                     result = machine.find_BST(search_number)    
                 elif(type=="DFS"):
                     result = machine.find_DFS(search_number)
-                print(f"Pointer Machine operations: {machine.counter}")
+                # print(f"Pointer Machine operations: {machine.counter}") [u]
                 if result == True:
-                    print(f"Number {search_number} ✅ found in binary tree")
+                    #print(f"Number {search_number} ✅ found in binary tree") [u]
                     found_numbers.append(search_number)
                 else:
-                    print(f"Number {search_number} ❌ NOT found in binary tree")
+                    #print(f"Number {search_number} ❌ NOT found in binary tree") [u]
+                    a=1
             with open('found_numbers.txt', 'w') as file:
                 for number in found_numbers:
                     file.write(str(number) + ' ')

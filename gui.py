@@ -1,6 +1,7 @@
-import mroczkowski_library as mo
 import tkinter as tk
 from tkinter import font
+import mroczkowski_library as mo
+
 root = None
 root = mo.insert(root, 50)
 root = mo.insert(root, 25)
@@ -18,7 +19,11 @@ root = mo.insert(root, 29)
 root = mo.insert(root, 22)
 root = mo.insert(root, 7)
 
+
 def handle_button_click(value):
+    with open('input_gui.txt', 'w') as file:
+        for number in numbers:
+            file.write(str(number) + '\n')
     if value in numbers:
         numbers.remove(value)
         buttons[value]["state"] = tk.NORMAL
@@ -31,21 +36,16 @@ def handle_button_click(value):
 def check_numbers():
     print("Zaznaczone liczby:", numbers)
 
-def exit_app():
-    with open('input.txt', 'w') as file:
-        numbers_str = ', '.join(map(str, numbers))
-        file.write(numbers_str)
+def search_numbers():
+    mo.FST(root, "txt_input")
+    with open("found_numbers.txt", "r") as file:
+        found_numbers = set(map(int, file.read().split(',')))
 
-    # Perform the search in the binary tree
-    with open('input.txt', 'r') as file:
-        search_numbers = [int(x) for x in file.read().split(', ')]
-
-    for number in search_numbers:
-        found = mo.FST(root, number)  # Perform the search
-        if found:
-            buttons[number]["bg"] = "green"  # Mark found numbers as green
+    for number in numbers:
+        if number in found_numbers:
+            buttons[number]["bg"] = "green"
         else:
-            buttons[number]["bg"] = "red"  # Mark not found numbers as red
+            buttons[number]["bg"] = "red"
 
 numbers = []
 
@@ -67,6 +67,6 @@ for i in range(1, 101):
 
 check_button = tk.Button(r, text="Check", command=check_numbers, width=8)
 check_button.pack()
-exit_button = tk.Button(r, text="Search", command=exit_app, width=8)
-exit_button.pack()
+search_button = tk.Button(r, text="Search Numbers", command=search_numbers, width=15)
+search_button.pack()
 r.mainloop()

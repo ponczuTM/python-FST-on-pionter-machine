@@ -1,29 +1,23 @@
 import mroczkowski_library as mo
-#mo.help()
 import random
 import os
+import tracemalloc
 from colorama import Fore
-os.system("cls")
-
 from colorama import init, Fore, Style
+
 init()
-print(f"{Style.BRIGHT}{Fore.CYAN}Tekst pogrubiony")
+print(f"{Style.BRIGHT}{Fore.CYAN}")
 
-
-
+results = []
 root = None
 for i in range (1,1000):
-    root = mo.insert(root, random.randint(1,10000))
-
-
-
-
-g=0
-import tracemalloc
+    n=random.randint(-10000,10000)
+    while(n==0):
+        n=random.randint(1,10000)
+    root = mo.insert(root,n)
 
 def perform_operation(choice, root):
-    tracemalloc.start()  # Rozpocznij śledzenie pamięci przed wykonaniem operacji
-
+    tracemalloc.start()
     if choice == "1" or choice == "F" or choice == "FST":
         mo.FST(root, "txt_input")
     elif choice == "2" or choice == "B" or choice == "BST":
@@ -32,17 +26,45 @@ def perform_operation(choice, root):
         mo.DFS(root, "txt_input")
     else:
         print("wrong choice. Try again")
-
-    current, peak = tracemalloc.get_traced_memory()
-    print(f"\nCurrent memory usage: {current / 10**3}")
-    print(f"Peak memory usage: {peak / 10**3}")
-    g=peak
+    c, p = tracemalloc.get_traced_memory()
     tracemalloc.stop()
-    return g
+    results.append(c)
+    results.append(p)
 
-a = perform_operation("1", root)
-b = perform_operation("2", root)
-c = perform_operation("3", root)
-
+perform_operation("1", root)
+fst_c = results[0]
+fst_p = results[1]
+results.clear()
+perform_operation("2", root)
+bst_c = results[0]
+bst_p = results[1]
+results.clear()
+perform_operation("3", root)
+dfs_c = results[0]
+dfs_p = results[1]
+results.clear()
 os.system("cls")
-print(f"\na: {a} b\nb: {b} b\nc: {c} b")
+depth=mo.find_tree_depth(root)
+print(f"A binary tree has 1000 nodes, and the tree's depth is {depth}.")
+print("Every node is a number between -1000000 and 1000000.")
+print("Every number that equals 0 was replaced by another.")
+print("\nEvery algorithm searched in this tree for 200 numbers.")
+print("They used some memory to perform these operations.")
+print("Here are the results:")
+print(f"FST: {fst_c}, peak: {fst_p}")
+print(f"BST: {bst_c}, peak: {bst_p}")
+print(f"DFS: {dfs_c}, peak: {dfs_p}")
+
+
+"""
+A binary tree has 1000 nodes, and the tree's depth is 32.
+Every node is a number between -1000000 and 1000000.
+Every number that equals 0 was replaced by another.
+
+Every algorithm searched in this tree for 200 numbers.
+They used some memory to perform these operations.
+Here are the results:
+FST: 654887, peak: 1812806
+BST: 640841, peak: 1664095
+DFS: 636290, peak: 1659703
+"""
