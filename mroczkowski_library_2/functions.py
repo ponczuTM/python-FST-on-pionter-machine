@@ -46,10 +46,7 @@ class PointerMachine:
         self.value = None
         self.counter = 0
         self.registers = []
-        self.fingers = set() # fast lookup, slow iteration + no repeats
-        # list slow lookup, fast iteration
-        # bloom filter: to check if element can be in the set, false positive
-        # bloom filter for values at fingers
+        self.fingers = set()
         self.fingers.add(0)
     def get(self):
         self.value = self.array[self.index]
