@@ -54,17 +54,3 @@ print("Here are the results:")
 print(f"FST: {fst_c}, peak: {fst_p}")
 print(f"BST: {bst_c}, peak: {bst_p}")
 print(f"DFS: {dfs_c}, peak: {dfs_p}")
-
-
-"""
-A binary tree has 1000 nodes, and the tree's depth is 32.
-Every node is a number between -1000000 and 1000000.
-Every number that equals 0 was replaced by another.
-
-Every algorithm searched in this tree for 200 numbers.
-They used some memory to perform these operations.
-Here are the results:
-FST: 654887, peak: 1812806
-BST: 640841, peak: 1664095
-DFS: 636290, peak: 1659703
-"""

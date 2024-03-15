@@ -1,0 +1,7 @@
+FST_1:	0.4258 MB	standard finger search
+BST_1:	0.0859 MB	standard search
+DFS_1:	0.1328 MB	standard search
+FST_2:	0.3555 MB	divide finger search, set()
+FST_3:	0.2500 MB	treshold finger search, set()
+FST_4:	0.2617 MB	standard finger search, list
+FST_5:	0.2773 MB	treshold finger search, list

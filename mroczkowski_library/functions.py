@@ -73,15 +73,15 @@ class PointerMachine:
     def move(self, steps):
         while steps > 0:
             # self.go_R()
-            self.index = self.index + 1
+            self.index += 1
             self.counter += 1
             steps -= 1
         while steps < 0:
             # self.go_L()
-            self.index = self.index - 1
+            self.index -= 1
             self.counter += 1
             steps += 1
-    
+                
     def get_closest_finger(self, number):
         closest_finger = None
         smallest_distance = None
@@ -134,6 +134,7 @@ class PointerMachine:
 
 
     def find_BST(self, number):
+        self.move(-self.index)
         self.counter = 0
         steps = 0
         while number != self.value:
@@ -248,7 +249,6 @@ def find(root, type, txt):
     elif(txt=="Yes"):
         try:
             #filename = input("enter input file name: ")
-            found_numbers=[]
             filename="input.txt"
             with open(filename, 'r') as file:
                 numbers_from_txt = [int(num.strip()) for num in file.read().split(',')]
@@ -264,12 +264,8 @@ def find(root, type, txt):
                 print(f"Pointer Machine operations: {machine.counter}")
                 if result == True:
                     print(f"Number {search_number} ✅ found in binary tree")
-                    found_numbers.append(search_number)
                 else:
                     print(f"Number {search_number} ❌ NOT found in binary tree")
-            with open('found_numbers.txt', 'w') as file:
-                for number in found_numbers:
-                    file.write(str(number) + ' ')
 
         except FileNotFoundError:
             print("Plik 'input.txt' nie został znaleziony.")

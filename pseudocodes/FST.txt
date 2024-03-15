@@ -1,10 +1,8 @@
 steps_quantity = 0
 value = set_value_as_closest_finger()
-
 while search_number != value:
     if value == null:
         return false
-
     if search_number < value:
         go_to_left_child()
         if value == null:
@@ -19,6 +17,4 @@ while search_number != value:
         steps_quantity = steps_quantity + 1
         if value != null:
             add_value_to_fingers()
-
-print(steps_quantity)
 return true

@@ -1,3 +1,5 @@
+values = [260, 36, 118, -284, 933, -684, -565, -387, 281, -14, 428, -331, 959, -702, 884, -951, 727, 467, -107, 251, 212, -83, 923, 925, -948, 917, -644, 31, 493, 362, 872, 64, -524, -592, 24, 996, 647, -929, -528, 707, 798, -353, 47, 573, -892, -421, 426, 584, -166, 370, 379, -423, 525, 580, -58, 361, -469, 500, -629, 581, -298, 738, -431, 304, 789, 117, -137, -492, 810, 377, 629, -853, -688, 129, -891, -462, 295, -838, -483, -232, -250, 139, -653, 676, -552, -671, 964, 630, -844, -832, 557, -354, -163, -819, 113, 196, 984, -703, -865, 153]
+
 def help(show=None): 
     if show:
         print("nice try but there is no code to print :)")
@@ -48,7 +50,6 @@ class PointerMachine:
         self.registers = []
         self.fingers = set()
         self.fingers.add(0)
-        self.fingers_count = 0
     def get(self):
         self.value = self.array[self.index]
         self.counter += 1
@@ -74,53 +75,49 @@ class PointerMachine:
     def move(self, steps):
         while steps > 0:
             # self.go_R()
-            self.index = self.index + 1
+            self.index += 1
             self.counter += 1
             steps -= 1
         while steps < 0:
             # self.go_L()
-            self.index = self.index - 1
+            self.index -= 1
             self.counter += 1
             steps += 1
-
-    def threshold_search(self, number):
-        threshold = int(len(self.fingers)/10)
-        closest_value = None
-        min_difference = float('inf')
-        for value in self.fingers:
-            difference = abs(value - number)
-            if difference <= threshold and difference < min_difference:
-                closest_value = value
-                min_difference = difference
-            self.move(self.index*(-1))
-        if closest_value is not None:
-            self.move(closest_value)
+                
+    def get_closest_finger(self, number):
+        closest_finger = None
+        smallest_distance = None
+        for finger in self.fingers:
+            self.move(finger - self.index)
+            self.get()
+            if (closest_finger is None or abs(self.value - number) < smallest_distance):
+                closest_finger = finger
+                smallest_distance = abs(self.value - number)
+        self.move(closest_finger - self.index)
         self.get()
-
+        
     def find_FST(self, number):
         self.counter = 0
         steps = 0
-        self.threshold_search(number)
+        self.get_closest_finger(number)
         while number != self.value:
             self.get()
             if self.value is None:
-                print(f"steps in algorithm: {steps}") 
+                print(f"steps in algorithm: {steps}")
                 self.move(-self.index)
                 return False
             if number < self.value:
                 self.go_R()
                 self.get()
                 if self.value is None:
-                    print(f"steps in algorithm: {steps}") 
+                    print(f"steps in algorithm: {steps}")
                     self.move(-self.index)
                     return False
                 self.move(self.value)
                 self.get()
                 steps += 1
                 if self.value is not None:
-                    if(self.fingers_count<10):
-                        self.set_finger(self.index)
-                        self.fingers_count+=1
+                    self.set_finger(self.index)
             else:
                 self.go_R()
                 self.go_R()
@@ -133,11 +130,8 @@ class PointerMachine:
                 self.get()
                 steps += 1
                 if self.value is not None:
-                    if(self.fingers_count<10):
-                        self.set_finger(self.index)
-                        self.fingers_count+=1
-        print(f"steps in algorithm: {steps}") 
-        
+                    self.set_finger(self.index)
+        print(f"steps in algorithm: {steps}")
         return True
 
 
@@ -168,7 +162,7 @@ class PointerMachine:
                     self.move(self.value)
                     self.get()
                     steps += 1
-        print(f"steps in algorithm: {steps}") 
+        print(f"steps in algorithm: {steps}")
         #self.move(-self.index)
         #self.get()
         return True
@@ -181,7 +175,7 @@ class PointerMachine:
         while number != self.value:
             if self.value == "#":
                 self.move(-self.index)
-                print(f"steps in algorithm: {steps}") 
+                print(f"steps in algorithm: {steps}")
                 return False
             self.go_R()
             self.go_R()
@@ -189,7 +183,7 @@ class PointerMachine:
             self.go_R()
             self.get()
             steps+=1
-        print(f"steps in algorithm: {steps}") 
+        print(f"steps in algorithm: {steps}")
         self.move(-self.index)
         self.get()
         return True
@@ -252,16 +246,11 @@ def find(root, type, txt):
             print(f"Pointer Machine operations: {machine.counter}")        
             if result == True:
                 print(f"Number {search_number} ✅ found in binary tree") # w wierzchołku o wartości {result.val}")
-                a=1
             else:
                 print(f"Number {search_number} ❌ NOT found in binary tree")
-                a=2
     elif(txt=="Yes"):
         try:
-            #filename = input("enter input file name: ")
-            filename="input.txt"
-            with open(filename, 'r') as file:
-                numbers_from_txt = [int(num.strip()) for num in file.read().split(',')]
+            numbers_from_txt = values.copy()
             for search_number in numbers_from_txt:
                 if search_number == 0:
                     break
@@ -271,15 +260,13 @@ def find(root, type, txt):
                     result = machine.find_BST(search_number)    
                 elif(type=="DFS"):
                     result = machine.find_DFS(search_number)
-                print(f"Pointer Machine operations: {machine.counter}") 
+                print(f"Pointer Machine operations: {machine.counter}")
                 if result == True:
                     print(f"Number {search_number} ✅ found in binary tree")
                 else:
                     print(f"Number {search_number} ❌ NOT found in binary tree")
-                    a=1
 
         except FileNotFoundError:
-            print("Plik 'input.txt' nie został znaleziony.")
             numbers_from_txt = []
 
 def FST(root, show=None): 
@@ -328,3 +315,41 @@ def find_tree_depth(node):
 
 #depth = find_tree_depth(root)
 #print(f"Głębokość drzewa wynosi: {depth}")
+
+
+import random
+import os
+import tracemalloc
+from colorama import Fore
+from colorama import init, Fore, Style
+
+init()
+print(f"{Style.BRIGHT}{Fore.CYAN}")
+
+results = []
+root = None
+for i in range (1,1000):
+    n=random.randint(-10000,10000)
+    while(n==0):
+        n=random.randint(1,10000)
+    root = insert(root,n)
+
+
+import psutil
+import subprocess
+
+# Funkcja do pomiaru zużycia pamięci
+def measure_memory_usage(algorithm):
+    process = psutil.Process()
+    before_memory = process.memory_info().rss
+    algorithm()
+    after_memory = process.memory_info().rss
+    memory_used = after_memory - before_memory
+    return memory_used / (1024 * 1024)
+
+memory_used_fst = measure_memory_usage(lambda: FST(root, "txt_input"))
+memory_used_bst = measure_memory_usage(lambda: BST(root, "txt_input"))
+memory_used_dfs = measure_memory_usage(lambda: DFS(root, "txt_input"))
+print("FST:", memory_used_fst, "MB")
+print("BST:", memory_used_bst, "MB")
+print("DFS:", memory_used_dfs, "MB")

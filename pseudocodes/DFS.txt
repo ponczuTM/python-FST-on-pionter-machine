@@ -1,0 +1,14 @@
+steps_quantity = 0
+while number != value:
+        if value == "#":
+            go_to_beginning_of_of_array()
+            return False
+        go_R()
+        go_R()
+        go_R()
+        go_R()
+        get_value()
+        steps_quantity = steps_quantity + 1
+    go_to_beginning_of_of_array()
+    get_value()
+    return True

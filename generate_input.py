@@ -2,10 +2,10 @@ import random
 
 def generate_numbers():
     numbers = []
-    for _ in range(1000):
-        number = random.randint(-10000, 10000)
+    for _ in range(500):
+        number = random.randint(-1000, 1000)
         while number == 0:
-            number = random.randint(-10000, 10000)
+            number = random.randint(-1000, 1000)
         numbers.append(number)
     return numbers
 

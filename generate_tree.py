@@ -10,9 +10,6 @@ print(depth)
 with open("depth.txt", "w") as file:
     file.write(str(depth))
 
-print("---------------")
-print("---------------")
-print("---------------")
 for _ in range(depth):
     p = random.randint(1, 101)
     root = mo.insert(root, p)
