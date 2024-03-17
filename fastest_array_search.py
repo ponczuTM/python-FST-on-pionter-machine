@@ -99,10 +99,9 @@ def linear_search(arr, target):
             closest_value = value
     return closest_value
 
-
-def min_key_linear_search(arr, target):
-    closest_value = min(arr, key=lambda x: abs(target - x))
-    return closest_value
+# def min_key_linear_search(arr, target):
+#     closest_value = min(arr, key=lambda x: abs(target - x))
+#     return closest_value
 
 def numpy_search(arr, target):
     closest_value = np.argmin(np.abs(np.array(arr) - target))
@@ -111,6 +110,7 @@ def numpy_search(arr, target):
 
 def divide_search(arr, target, parts):
     sorted_arr = sorted(arr)
+    parts = int(len(sorted_arr)/10)+1
     part_length = len(sorted_arr) // parts
     for i in range(parts):
         start_index = i * part_length
@@ -118,11 +118,19 @@ def divide_search(arr, target, parts):
         if sorted_arr[start_index] <= target <= sorted_arr[end_index - 1]:
             closest_value = min(sorted_arr[start_index:end_index], key=lambda x: abs(x - target))
             return closest_value
-    return None
+    # return None
+    closest_value = arr[0]
+    min_difference = abs(target - arr[0])
+    for value in arr:
+        difference = abs(target - value)
+        if difference < min_difference:
+            min_difference = difference
+            closest_value = value
+    return closest_value
 
 
 
-array = [random.randint(-1000000, 1000000) for _ in range(1000000)]
+array = [random.randint(-1000000, 1000000) for _ in range(10000)]
 threshold = int(len(array)/10)
 parts = int(len(array)/10)
 target_value = 0
@@ -132,32 +140,32 @@ bst_root = None
 for value in array:
     bst_root = insert(bst_root, value)
 end_time = time.time()
-print(f"tworzenie drzewa: {end_time - start_time}")
+# print(f"tworzenie drzewa: {end_time - start_time}")
     
+start_time = time.time()
+result_standard = standard_search(array, target_value)
+end_time = time.time()
+standard_time = end_time - start_time
 start_time = time.time()
 result_bst = bst_search(bst_root, target_value)
 end_time = time.time()
 bst_time = end_time - start_time
 start_time = time.time()
-result_standard = standard_search(array, target_value)
-end_time = time.time()
-standard = end_time - start_time
-start_time = time.time()
 result_threshold = threshold_search(array, target_value, threshold)
 end_time = time.time()
-tresh = end_time - start_time
+thresh_time = end_time - start_time
 start_time = time.time()
 result_linear = linear_search(array, target_value)
 end_time = time.time()
-line = end_time - start_time
-start_time = time.time()
-result_min_key_linear = min_key_linear_search(array, target_value)
-end_time = time.time()
-mkline = end_time - start_time
+line_time = end_time - start_time
+# start_time = time.time()
+# result_min_key_linear = min_key_linear_search(array, target_value)
+# end_time = time.time()
+# mkline_time = end_time - start_time
 start_time = time.time()
 result_binary = binary_search(array, target_value)
 end_time = time.time()
-binary = end_time - start_time
+binary_time = end_time - start_time
 start_time = time.time()
 result_numpy = numpy_search(array, target_value)
 end_time = time.time()
@@ -167,12 +175,28 @@ result_divide = divide_search(array, target_value, parts)
 end_time = time.time()
 divide_time = end_time - start_time
 
+print(f"{standard_time:.12f}s is time to find {result_standard} by standard search")
+print(f"{thresh_time:.12f}s is time to find {result_threshold} by threshold search")
+print(f"{line_time:.12f}s is time to find {result_linear} by linear search")
+# print(f"{mkline_time:.12f}s is time to find {result_min_key_linear} by min-key-linear search")
+print(f"{binary_time:.12f}s is time to find {result_binary} by binary search")
+print(f"{divide_time:.12f}s is time to find {result_divide} by divide search")
+print(f"{numpy_time:.12f}s is time to find {result_numpy} by numpy search")
+print(f"{bst_time:.12f}s is time to find {result_bst} by bst search")
+os.system("cls")
 
-print(f"Przeszukiwanie standardowe:\tliczba: {result_standard}, Czas: {standard} sekundy")
-print(f"Przeszukiwanie z tresholdem:\tliczba: {result_threshold}, Czas: {tresh} sekundy")
-print(f"Przeszukiwanie liniowe:\t\tliczba: {result_linear}, Czas: {line} sekundy")
-print(f"przeszukiwanie m-k liniowe:\tliczba: {result_min_key_linear}, Czas: {mkline} sekundy")
-print(f"Przeszukiwanie binarne:\t\tliczba: {result_binary}, Czas: {binary} sekundy")
-print(f"Przeszukiwanie dzielone:\tliczba: {result_divide}, Czas: {divide_time}")
-print(f"Przeszukiwanie numpy:\t\tliczba: {result_numpy}, Czas: {numpy_time} sekundy")
-print(f"Przeszukiwanie BST:\t\tliczba: {result_bst}, Czas: {bst_time} sekundy")
+results = [
+    (standard_time, result_standard, "standard search"),
+    (thresh_time, result_threshold, "threshold search"),
+    (line_time, result_linear, "linear search"),
+    # (mkline_time, result_min_key_linear, "min-key-linear search"),
+    (binary_time, result_binary, "binary search"),
+    (divide_time, result_divide, "divide search"),
+    (numpy_time, result_numpy, "numpy search"),
+    (bst_time, result_bst, "bst search")
+]
+
+sorted_results = sorted(results, key=lambda x: x[0], reverse=True)
+
+for search_time, result, search_type in sorted_results:
+    print(f"{search_time:.12f}s is time to find {result} by {search_type}")

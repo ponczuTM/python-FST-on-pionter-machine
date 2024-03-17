@@ -9,8 +9,6 @@ from colorama import init, Fore, Style
 init()
 print(f"{Style.BRIGHT}{Fore.CYAN}Tekst pogrubiony")
 
-
-
 root = None
 root = mo.insert(root, 50)
 root = mo.insert(root, 25)

@@ -99,10 +99,9 @@ def linear_search(arr, target):
             closest_value = value
     return closest_value
 
-
-def min_key_linear_search(arr, target):
-    closest_value = min(arr, key=lambda x: abs(target - x))
-    return closest_value
+# def min_key_linear_search(arr, target):
+#     closest_value = min(arr, key=lambda x: abs(target - x))
+#     return closest_value
 
 def numpy_search(arr, target):
     closest_value = np.argmin(np.abs(np.array(arr) - target))
@@ -119,6 +118,7 @@ def divide_search(arr, target, parts):
         if sorted_arr[start_index] <= target <= sorted_arr[end_index - 1]:
             closest_value = min(sorted_arr[start_index:end_index], key=lambda x: abs(x - target))
             return closest_value
+    # return None
     closest_value = arr[0]
     min_difference = abs(target - arr[0])
     for value in arr:
@@ -128,75 +128,84 @@ def divide_search(arr, target, parts):
             closest_value = value
     return closest_value
 
+for _ in range(1000):
+    array = [random.randint(-1000000, 1000000) for _ in range(10000)]
+    threshold = int(len(array) / 10)
+    parts = int(len(array) / 10)
+    target_value = 0
 
+    results = []
+    start_time = time.time()
+    bst_root = None
+    for value in array:
+        bst_root = insert(bst_root, value)
+    end_time = time.time()
+    bst_time = end_time - start_time
 
-array = [random.randint(-10000, 10000) for _ in range(10000)]
-threshold = int(len(array)/10)
-parts = int(len(array)/10)
-target_value = 0
+    start_time = time.time()
+    result_standard = standard_search(array, target_value)
+    end_time = time.time()
+    standard_time = end_time - start_time
 
-start_time = time.time()
-bst_root = None
-for value in array:
-    bst_root = insert(bst_root, value)
-end_time = time.time()
-# print(f"tworzenie drzewa: {end_time - start_time}")
-    
-start_time = time.time()
-result_standard = standard_search(array, target_value)
-end_time = time.time()
-standard_time = end_time - start_time
-start_time = time.time()
-result_bst = bst_search(bst_root, target_value)
-end_time = time.time()
-bst_time = end_time - start_time
-start_time = time.time()
-result_threshold = threshold_search(array, target_value, threshold)
-end_time = time.time()
-thresh_time = end_time - start_time
-start_time = time.time()
-result_linear = linear_search(array, target_value)
-end_time = time.time()
-line_time = end_time - start_time
-start_time = time.time()
-result_min_key_linear = min_key_linear_search(array, target_value)
-end_time = time.time()
-mkline_time = end_time - start_time
-start_time = time.time()
-result_binary = binary_search(array, target_value)
-end_time = time.time()
-binary_time = end_time - start_time
-start_time = time.time()
-result_numpy = numpy_search(array, target_value)
-end_time = time.time()
-numpy_time = end_time - start_time
-start_time = time.time()
-result_divide = divide_search(array, target_value, parts)
-end_time = time.time()
-divide_time = end_time - start_time
+    start_time = time.time()
+    result_bst = bst_search(bst_root, target_value)
+    end_time = time.time()
+    bst_time = end_time - start_time
 
-print(f"{standard_time:.12f}s is time to find {result_standard} by standard search")
-print(f"{thresh_time:.12f}s is time to find {result_threshold} by threshold search")
-print(f"{line_time:.12f}s is time to find {result_linear} by linear search")
-print(f"{mkline_time:.12f}s is time to find {result_min_key_linear} by min-key-linear search")
-print(f"{binary_time:.12f}s is time to find {result_binary} by binary search")
-print(f"{divide_time:.12f}s is time to find {result_divide} by divide search")
-print(f"{numpy_time:.12f}s is time to find {result_numpy} by numpy search")
-print(f"{bst_time:.12f}s is time to find {result_bst} by bst search")
-os.system("cls")
+    start_time = time.time()
+    result_threshold = threshold_search(array, target_value, threshold)
+    end_time = time.time()
+    thresh_time = end_time - start_time
 
-results = [
-    (standard_time, result_standard, "standard search"),
-    (thresh_time, result_threshold, "threshold search"),
-    (line_time, result_linear, "linear search"),
-    (mkline_time, result_min_key_linear, "min-key-linear search"),
-    (binary_time, result_binary, "binary search"),
-    (divide_time, result_divide, "divide search"),
-    (numpy_time, result_numpy, "numpy search"),
-    (bst_time, result_bst, "bst search")
-]
+    start_time = time.time()
+    result_linear = linear_search(array, target_value)
+    end_time = time.time()
+    line_time = end_time - start_time
 
-sorted_results = sorted(results, key=lambda x: x[0], reverse=True)
+    start_time = time.time()
+    result_binary = binary_search(array, target_value)
+    end_time = time.time()
+    binary_time = end_time - start_time
 
-for time, result, search_type in sorted_results:
-    print(f"{time:.12f}s is time to find {result} by {search_type}")
+    start_time = time.time()
+    result_numpy = numpy_search(array, target_value)
+    end_time = time.time()
+    numpy_time = end_time - start_time
+
+    start_time = time.time()
+    result_divide = divide_search(array, target_value, parts)
+    end_time = time.time()
+    divide_time = end_time - start_time
+
+    results.append([
+        standard_time, result_standard, "standard search",
+        thresh_time, result_threshold, "threshold search",
+        line_time, result_linear, "linear search",
+        binary_time, result_binary, "binary search",
+        divide_time, result_divide, "divide search",
+        numpy_time, result_numpy, "numpy search",
+        bst_time, result_bst, "bst search"
+    ])
+
+# Calculate average times
+average_times = {}
+for result in results:
+    for i in range(0, len(result), 3):
+        time_taken = result[i]
+        search_type = result[i+2]
+        if search_type in average_times:
+            average_times[search_type].append(time_taken)
+        else:
+            average_times[search_type] = [time_taken]
+
+# Calculate average of each search type
+for search_type, times in average_times.items():
+    average_time = sum(times) / len(times)
+    average_times[search_type] = average_time
+
+# Sort by average time
+sorted_average_times = sorted(average_times.items(), key=lambda x: x[1], reverse=True)
+
+# Print sorted average times
+for search_type, average_time in sorted_average_times:
+    print(f"{average_time:.12f}s is the average time for {search_type}")

@@ -1,0 +1,7 @@
+0.002000093460s is time to find -52 by linear search
+0.001999855042s is time to find -52 by binary search
+0.001993894577s is time to find -52 by standard search
+0.001003503799s is time to find -52 by numpy search
+0.000999450684s is time to find -52 by threshold search
+0.000998020172s is time to find -52 by divide search
+0.000000000000s is time to find -52 by bst search
