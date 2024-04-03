@@ -25,20 +25,6 @@ def bsort(array, show=None):
                     array[j], array[j+1] = array[j+1], array[j]
         return array
 
-def test(array, *args):
-    num_args = len(args)
-    if num_args == 0:
-        print("Przekazałeś do funkcji tylko tablicę liczb")
-    elif num_args == 1 and isinstance(args[0], str):
-        print(f"Przekazałeś do funkcji tylko tablicę liczb oraz napis: {args[0]}")
-    elif num_args == 2 and all(isinstance(x, str) for x in args):
-        print(f"Przekazałeś do funkcji tablicę liczb oraz dwa napisy: {args[0]} i {args[1]}")
-    elif num_args == 3 and all(isinstance(x, str) for x in args):
-        print(f"Przekazałeś do funkcji tablicę liczb oraz trzy napisy: {args[0]}, {args[1]} i {args[2]}")
-    elif num_args == 4 and all(isinstance(x, str) for x in args):
-        print(f"Przekazałeś do funkcji tablicę liczb oraz cztery napisy: {args[0]}, {args[1]}, {args[2]} i {args[3]}")
-
-
 class PointerMachine:
     def __init__(self, array):
         self.array = array
