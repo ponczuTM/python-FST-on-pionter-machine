@@ -2,7 +2,6 @@ import mroczkowski_library as mo
 import random
 import os
 import tracemalloc
-from colorama import Fore
 from colorama import init, Fore, Style
 
 init()
@@ -10,7 +9,7 @@ print(f"{Style.BRIGHT}{Fore.CYAN}")
 
 results = []
 root = None
-for i in range (1,1000):
+for i in range (1,10):
     n=random.randint(-10000,10000)
     while(n==0):
         n=random.randint(1,10000)

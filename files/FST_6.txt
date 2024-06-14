@@ -1,19 +1,27 @@
-def get_closest_finger(self, number):
-    closest_finger = None
-    smallest_distance = None
-    for finger in self.fingers:
-        self.move(finger - self.index)
-        self.get()
-        if (closest_finger is None or abs(self.value - number) < smallest_distance):
-            closest_finger = finger
-            smallest_distance = abs(self.value - number)
-    self.move(closest_finger - self.index)
-    self.get()
+def divide_search(self, number):
+    error = True
+    parts = int(len(self.fingers)/10)+1
+    sorted_arr = sorted(self.fingers)
+    part_length = len(sorted_arr) // parts
+    for i in range(parts):
+        start_index = i * part_length
+        end_index = (i + 1) * part_length if i < parts - 1 else len(sorted_arr)
+        if sorted_arr[start_index] <= number <= sorted_arr[end_index - 1]:
+            closest_value = min(sorted_arr[start_index:end_index], key=lambda x: abs(x - number))
+            self.move(self.index*(-1))
+            if closest_value is not None:
+                self.move(closest_value)
+            self.get()
+            error = False
+    if error:
+        self.threshold_search(number)
 
+    
+    
 def find_FST(self, number):
     self.counter = 0
     steps = 0
-    self.get_closest_finger(number)
+    self.divide_search(number)
     while number != self.value:
         self.get()
         if self.value is None:

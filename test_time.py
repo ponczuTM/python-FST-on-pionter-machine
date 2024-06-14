@@ -17,9 +17,9 @@ root4 = None
 root5 = None
 root6 = None
 for i in range (1,1000):
-    n=random.randint(-1000,1000)
+    n=random.randint(-10000,10000)
     while(n==0):
-        n=random.randint(1,1000)
+        n=random.randint(1,10000)
     root = mo.insert(root,n)
 
 start_time = time.time()

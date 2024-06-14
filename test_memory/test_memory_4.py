@@ -1,6 +1,6 @@
 import sys
 sys.path.append('C:/Users/Oliwer/Desktop/Magisterka/python FST on pionter machine')
-import mroczkowski_library_2 as mo4
+import mroczkowski_library_4 as mo4
 import random
 import psutil
 from colorama import init, Fore, Style
@@ -10,9 +10,9 @@ print(f"{Style.BRIGHT}{Fore.CYAN}")
 
 root = None
 for i in range (1,1000):
-    n=random.randint(-1000,1000)
+    n=random.randint(-10000,10000)
     while(n==0):
-        n=random.randint(1,1000)
+        n=random.randint(1,10000)
     root = mo4.insert(root,n)
 
 def measure_memory_usage(algorithm):

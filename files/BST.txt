@@ -1,1 +1,27 @@
-coś tu jest
+def find_BST(self, number):
+    self.move(-self.index)
+    self.counter = 0
+    steps = 0
+    while number != self.value:
+        self.get()
+        if number < self.value:
+            self.go_R()
+            self.get()
+            if self.value is None:
+                return False
+            else:
+                self.move(self.value)
+                self.get()
+                steps += 1
+        elif number > self.value:
+            self.go_R()
+            self.go_R()
+            self.get()
+            if self.value is None:
+                return False
+            else:
+                self.move(self.value)
+                self.get()
+                steps += 1
+    print(f"steps in algorithm: {steps}")
+    return True

@@ -33,9 +33,8 @@ class PointerMachine:
         self.value = None
         self.counter = 0
         self.registers = []
-        self.fingers = set()
-        self.fingers.add(0)
-        self.fingers_count = 0
+        self.fingers = []
+        self.fingers.append(0)
     def get(self):
         self.value = self.array[self.index]
         self.counter += 1
@@ -43,7 +42,8 @@ class PointerMachine:
         self.array[self.index] = value
         self.counter += 1
     def set_finger(self, index):
-        self.fingers.add(index)
+        self.fingers.append(index)
+
         self.counter += 1
     def go_R(self):
         self.index += 1
@@ -78,30 +78,48 @@ class PointerMachine:
             self.move(closest_value)
         self.get()
 
+    def divide_search(self, number):
+        error = True
+        parts = int(len(self.fingers)/10)+1
+        sorted_arr = sorted(self.fingers)
+        part_length = len(sorted_arr) // parts
+        for i in range(parts):
+            start_index = i * part_length
+            end_index = (i + 1) * part_length if i < parts - 1 else len(sorted_arr)
+            if sorted_arr[start_index] <= number <= sorted_arr[end_index - 1]:
+                closest_value = min(sorted_arr[start_index:end_index], key=lambda x: abs(x - number))
+                self.move(self.index*(-1))
+                if closest_value is not None:
+                    self.move(closest_value)
+                self.get()
+                error = False
+        if error:
+            self.threshold_search(number)
+
+        
+        
     def find_FST(self, number):
         self.counter = 0
         steps = 0
-        self.threshold_search(number)
+        self.divide_search(number)
         while number != self.value:
             self.get()
             if self.value is None:
-                print(f"steps in algorithm: {steps}") 
+                print(f"steps in algorithm: {steps}")
                 self.move(-self.index)
                 return False
             if number < self.value:
                 self.go_R()
                 self.get()
                 if self.value is None:
-                    print(f"steps in algorithm: {steps}") 
+                    print(f"steps in algorithm: {steps}")
                     self.move(-self.index)
                     return False
                 self.move(self.value)
                 self.get()
                 steps += 1
                 if self.value is not None:
-                    if(self.fingers_count<10):
-                        self.set_finger(self.index)
-                        self.fingers_count+=1
+                    self.set_finger(self.index)
             else:
                 self.go_R()
                 self.go_R()
@@ -114,11 +132,8 @@ class PointerMachine:
                 self.get()
                 steps += 1
                 if self.value is not None:
-                    if(self.fingers_count<10):
-                        self.set_finger(self.index)
-                        self.fingers_count+=1
-        print(f"steps in algorithm: {steps}") 
-        
+                    self.set_finger(self.index)
+        print(f"steps in algorithm: {steps}")
         return True
 
 
@@ -132,7 +147,6 @@ class PointerMachine:
                 self.go_R()
                 self.get()
                 if self.value is None:
-                    self.move(-self.index)
                     return False
                 else:
                     self.move(self.value)
@@ -143,13 +157,12 @@ class PointerMachine:
                 self.go_R()
                 self.get()
                 if self.value is None:
-                    self.move(-self.index)
                     return False
                 else:
                     self.move(self.value)
                     self.get()
                     steps += 1
-        print(f"steps in algorithm: {steps}") 
+        print(f"steps in algorithm: {steps}")
         return True
     
     
@@ -160,7 +173,7 @@ class PointerMachine:
         while number != self.value:
             if self.value == "#":
                 self.move(-self.index)
-                print(f"steps in algorithm: {steps}") 
+                print(f"steps in algorithm: {steps}")
                 return False
             self.go_R()
             self.go_R()
@@ -168,7 +181,7 @@ class PointerMachine:
             self.go_R()
             self.get()
             steps+=1
-        print(f"steps in algorithm: {steps}") 
+        print(f"steps in algorithm: {steps}")
         self.move(-self.index)
         self.get()
         return True
@@ -231,10 +244,8 @@ def find(root, type, txt):
             print(f"Pointer Machine operations: {machine.counter}")        
             if result == True:
                 print(f"Number {search_number} ✅ found in binary tree") # in vertex {result.val}")
-                a=1
             else:
                 print(f"Number {search_number} ❌ NOT found in binary tree")
-                a=2
     elif(txt=="Yes"):
         try:
             filename = input("enter input file name: ")
@@ -250,12 +261,11 @@ def find(root, type, txt):
                     result = machine.find_BST(search_number)    
                 elif(type=="DFS"):
                     result = machine.find_DFS(search_number)
-                print(f"Pointer Machine operations: {machine.counter}") 
+                print(f"Pointer Machine operations: {machine.counter}")
                 if result == True:
                     print(f"Number {search_number} ✅ found in binary tree")
                 else:
                     print(f"Number {search_number} ❌ NOT found in binary tree")
-                    a=1
 
         except FileNotFoundError:
             print("Plik 'input.txt' nie został znaleziony.")
@@ -263,7 +273,7 @@ def find(root, type, txt):
 
 def FST(root, show=None): 
     if show == 'show':
-        with open("files/FST.txt", "r") as file:
+        with open("files/FST_6.txt", "r") as file:
             content = file.read()
             print(content)
     elif show == 'txt_input':

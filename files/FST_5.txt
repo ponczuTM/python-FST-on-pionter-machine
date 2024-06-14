@@ -1,19 +1,21 @@
-def get_closest_finger(self, number):
-    closest_finger = None
-    smallest_distance = None
-    for finger in self.fingers:
-        self.move(finger - self.index)
-        self.get()
-        if (closest_finger is None or abs(self.value - number) < smallest_distance):
-            closest_finger = finger
-            smallest_distance = abs(self.value - number)
-    self.move(closest_finger - self.index)
+def threshold_search(self, number):
+    threshold = int(len(self.fingers)/10)
+    closest_value = None
+    min_difference = float('inf')
+    for value in self.fingers:
+        difference = abs(value - number)
+        if difference <= threshold and difference < min_difference:
+            closest_value = value
+            min_difference = difference
+        self.move(self.index*(-1))
+    if closest_value is not None:
+        self.move(closest_value)
     self.get()
-
+    
 def find_FST(self, number):
     self.counter = 0
     steps = 0
-    self.get_closest_finger(number)
+    self.threshold_search(number)
     while number != self.value:
         self.get()
         if self.value is None:

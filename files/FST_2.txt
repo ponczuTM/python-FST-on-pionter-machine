@@ -1,0 +1,56 @@
+def threshold_search(self, number):
+    threshold = int(len(self.fingers)/10)
+    closest_value = None
+    min_difference = float('inf')
+    for value in self.fingers:
+        difference = abs(value - number)
+        if difference <= threshold and difference < min_difference:
+            closest_value = value
+            min_difference = difference
+        self.move(self.index*(-1))
+    if closest_value is not None:
+        self.move(closest_value)
+    self.get()
+
+def find_FST(self, number):
+    self.counter = 0
+    steps = 0
+    self.threshold_search(number)
+    while number != self.value:
+        self.get()
+        if self.value is None:
+            print(f"steps in algorithm: {steps}") 
+            self.move(-self.index)
+            return False
+        if number < self.value:
+            self.go_R()
+            self.get()
+            if self.value is None:
+                print(f"steps in algorithm: {steps}") 
+                self.move(-self.index)
+                return False
+            self.move(self.value)
+            self.get()
+            steps += 1
+            if self.value is not None:
+                if(self.fingers_count<10):
+                    self.set_finger(self.index)
+                    self.fingers_count+=1
+        else:
+            self.go_R()
+            self.go_R()
+            self.get()
+            if self.value is None:
+                print(f"steps in algorithm: {steps}")
+                self.move(-self.index)
+                return False
+            self.move(self.value)
+            self.get()
+            steps += 1
+            if self.value is not None:
+                if(self.fingers_count<10):
+                    self.set_finger(self.index)
+                    self.fingers_count+=1
+    print(f"steps in algorithm: {steps}") 
+    
+    return True

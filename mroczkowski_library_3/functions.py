@@ -25,6 +25,7 @@ def bsort(array, show=None):
                     array[j], array[j+1] = array[j+1], array[j]
         return array
 
+
 class PointerMachine:
     def __init__(self, array):
         self.array = array
@@ -44,31 +45,40 @@ class PointerMachine:
         self.fingers.add(index)
         self.counter += 1
     def go_R(self):
-        self.index = self.index + 1
+        self.index += 1
         self.counter += 1
     def go_L(self):
-        self.index = self.index - 1
+        self.index -= 1
         self.counter += 1
-        """
     def go_U(self):
         self.index = self.index - len(self.registers)
         self.counter += 1
     def go_D(self):
         self.index = self.index + len(self.registers)
-        """
     def move(self, steps):
         while steps > 0:
-            # self.go_R()
-            self.index = self.index + 1
-            self.counter += 1
+            self.go_R()
             steps -= 1
         while steps < 0:
-            # self.go_L()
-            self.index = self.index - 1
-            self.counter += 1
+            self.go_L()
             steps += 1
-    
+
+    def threshold_search(self, number):
+        threshold = int(len(self.fingers)/10)
+        closest_value = None
+        min_difference = float('inf')
+        for value in self.fingers:
+            difference = abs(value - number)
+            if difference <= threshold and difference < min_difference:
+                closest_value = value
+                min_difference = difference
+            self.move(self.index*(-1))
+        if closest_value is not None:
+            self.move(closest_value)
+        self.get()
+
     def divide_search(self, number):
+        error = True
         parts = int(len(self.fingers)/10)+1
         sorted_arr = sorted(self.fingers)
         part_length = len(sorted_arr) // parts
@@ -81,6 +91,9 @@ class PointerMachine:
                 if closest_value is not None:
                     self.move(closest_value)
                 self.get()
+                error = False
+        if error:
+            self.threshold_search(number)
         
     def find_FST(self, number):
         self.counter = 0
@@ -149,8 +162,7 @@ class PointerMachine:
                     self.get()
                     steps += 1
         print(f"steps in algorithm: {steps}")
-        #self.move(-self.index)
-        #self.get()
+
         return True
     
     
@@ -231,13 +243,13 @@ def find(root, type, txt):
                 result = machine.find_DFS(search_number)    
             print(f"Pointer Machine operations: {machine.counter}")        
             if result == True:
-                print(f"Number {search_number} ✅ found in binary tree") # w wierzchołku o wartości {result.val}")
+                print(f"Number {search_number} ✅ found in binary tree") # in vertex {result.val}")
             else:
                 print(f"Number {search_number} ❌ NOT found in binary tree")
     elif(txt=="Yes"):
         try:
-            #filename = input("enter input file name: ")
-            filename="input.txt"
+            filename = input("enter input file name: ")
+            # filename = "input.txt" # if you want to run time test, uncomment this line and comment line above
             with open(filename, 'r') as file:
                 numbers_from_txt = [int(num.strip()) for num in file.read().split(',')]
             for search_number in numbers_from_txt:
@@ -261,7 +273,7 @@ def find(root, type, txt):
 
 def FST(root, show=None): 
     if show == 'show':
-        with open("files/FST.txt", "r") as file:
+        with open("files/FST_3.txt", "r") as file:
             content = file.read()
             print(content)
     elif show == 'txt_input':
@@ -302,6 +314,3 @@ def find_tree_depth(node):
         left_depth = find_tree_depth(node.left)
         right_depth = find_tree_depth(node.right)
         return max(left_depth, right_depth) + 1
-
-#depth = find_tree_depth(root)
-#print(f"Głębokość drzewa wynosi: {depth}")

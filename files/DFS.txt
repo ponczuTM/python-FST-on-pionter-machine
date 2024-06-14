@@ -1,1 +1,19 @@
-coś tu jest
+def find_DFS(self, number):
+    self.counter = 0
+    steps = 0
+    self.get()        
+    while number != self.value:
+        if self.value == "#":
+            self.move(-self.index)
+            print(f"steps in algorithm: {steps}")
+            return False
+        self.go_R()
+        self.go_R()
+        self.go_R()
+        self.go_R()
+        self.get()
+        steps+=1
+    print(f"steps in algorithm: {steps}")
+    self.move(-self.index)
+    self.get()
+    return True

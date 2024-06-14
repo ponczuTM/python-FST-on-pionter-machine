@@ -1,1 +1,1 @@
-from .functions import help, insert, FST, BST, DFS, save_binary_tree_to_array, test, bsort, display_tree, find_tree_depth
+from .functions import help, insert, FST, BST, DFS, save_binary_tree_to_array, bsort, display_tree, find_tree_depth

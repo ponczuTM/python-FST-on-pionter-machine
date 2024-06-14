@@ -1,7 +1,0 @@
-FST_1:	236.94329977035522	standard finger search, set()
-BST_1:	1.705944299697876	standard search
-DFS_1:	3.0607306957244873	standard search
-FST_2:	2.0652337074279785	divide finger search, set()
-FST_3:  1.2455439567565918	treshold finger search, set()
-FST_4:  120.37062478065491  standard finger search, list
-FST_5:  2.9005444049835205  treshold finger search, list

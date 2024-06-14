@@ -7,7 +7,7 @@ print(Fore.BLUE)
 
 from colorama import init, Fore, Style
 init()
-print(f"{Style.BRIGHT}{Fore.CYAN}Tekst pogrubiony")
+print(f"{Style.BRIGHT}{Fore.CYAN}")
 
 root = None
 root = mo.insert(root, 50)

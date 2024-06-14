@@ -99,10 +99,6 @@ def linear_search(arr, target):
             closest_value = value
     return closest_value
 
-# def min_key_linear_search(arr, target):
-#     closest_value = min(arr, key=lambda x: abs(target - x))
-#     return closest_value
-
 def numpy_search(arr, target):
     closest_value = np.argmin(np.abs(np.array(arr) - target))
     return arr[closest_value]
@@ -130,7 +126,7 @@ def divide_search(arr, target, parts):
 
 
 
-array = [random.randint(-1000000, 1000000) for _ in range(10000)]
+array = [random.randint(-1000000, 1000000) for _ in range(100000)]
 threshold = int(len(array)/10)
 parts = int(len(array)/10)
 target_value = 0
@@ -140,8 +136,7 @@ bst_root = None
 for value in array:
     bst_root = insert(bst_root, value)
 end_time = time.time()
-# print(f"tworzenie drzewa: {end_time - start_time}")
-    
+
 start_time = time.time()
 result_standard = standard_search(array, target_value)
 end_time = time.time()
@@ -158,10 +153,6 @@ start_time = time.time()
 result_linear = linear_search(array, target_value)
 end_time = time.time()
 line_time = end_time - start_time
-# start_time = time.time()
-# result_min_key_linear = min_key_linear_search(array, target_value)
-# end_time = time.time()
-# mkline_time = end_time - start_time
 start_time = time.time()
 result_binary = binary_search(array, target_value)
 end_time = time.time()
@@ -178,7 +169,6 @@ divide_time = end_time - start_time
 print(f"{standard_time:.12f}s is time to find {result_standard} by standard search")
 print(f"{thresh_time:.12f}s is time to find {result_threshold} by threshold search")
 print(f"{line_time:.12f}s is time to find {result_linear} by linear search")
-# print(f"{mkline_time:.12f}s is time to find {result_min_key_linear} by min-key-linear search")
 print(f"{binary_time:.12f}s is time to find {result_binary} by binary search")
 print(f"{divide_time:.12f}s is time to find {result_divide} by divide search")
 print(f"{numpy_time:.12f}s is time to find {result_numpy} by numpy search")
@@ -189,7 +179,6 @@ results = [
     (standard_time, result_standard, "standard search"),
     (thresh_time, result_threshold, "threshold search"),
     (line_time, result_linear, "linear search"),
-    # (mkline_time, result_min_key_linear, "min-key-linear search"),
     (binary_time, result_binary, "binary search"),
     (divide_time, result_divide, "divide search"),
     (numpy_time, result_numpy, "numpy search"),

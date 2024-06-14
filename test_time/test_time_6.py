@@ -1,9 +1,11 @@
 import sys
 sys.path.append('C:/Users/Oliwer/Desktop/Magisterka/python FST on pionter machine')
-import mroczkowski_library_4 as mo4
-import random, time
-from colorama import init, Fore, Style
+import mroczkowski_library_6 as mo6
+import os, random, time
+from colorama import Fore
+os.system("cls")
 print(Fore.BLUE)
+from colorama import init, Fore, Style
 init()
 print(f"{Style.BRIGHT}{Fore.CYAN}")
 
@@ -12,12 +14,12 @@ for i in range (1,1000):
     n=random.randint(-10000,10000)
     while(n==0):
         n=random.randint(1,10000)
-    root = mo4.insert(root,n)
+    root = mo6.insert(root,n)
 
 start_time = time.time()
-mo4.FST(root, "txt_input")
+mo6.FST(root, "txt_input")
 end_time = time.time()
 FST_time = end_time - start_time
 
 with open('time.txt', 'a') as file:
-    file.write(f"FST_4:\t{FST_time}\tstandard finger search, list\n")
+    file.write(f"FST_6:\t{FST_time}\ttreshold divide search, list\n")

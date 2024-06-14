@@ -9,7 +9,7 @@ def get_closest_finger(self, number):
             smallest_distance = abs(self.value - number)
     self.move(closest_finger - self.index)
     self.get()
-
+    
 def find_FST(self, number):
     self.counter = 0
     steps = 0
