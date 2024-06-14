@@ -22,4 +22,4 @@ end_time = time.time()
 FST_time = end_time - start_time
 
 with open('time.txt', 'a') as file:
-    file.write(f"FST_6:\t{FST_time}\ttreshold divide search, list\n")
+    file.write(f"FST_6:\t{FST_time}\tdivide finger search, list\n")

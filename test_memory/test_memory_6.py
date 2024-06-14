@@ -1,5 +1,6 @@
 import sys
-sys.path.append('C:/Users/Oliwer/Desktop/Magisterka/python FST on pionter machine')
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.getcwd())))
 import mroczkowski_library_6 as mo6
 import random
 import psutil

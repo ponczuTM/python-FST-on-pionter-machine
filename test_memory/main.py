@@ -6,7 +6,7 @@ from colorama import init, Fore, Style
 if os.path.exists("memory.txt"):
     os.remove("memory.txt")
 
-test_files = [f"test_memory_{i}.py" for i in range(1, 6)]
+test_files = [f"test_memory_{i}.py" for i in range(1, 7)]
 
 for test_file in test_files:
     if not os.path.isfile(test_file):

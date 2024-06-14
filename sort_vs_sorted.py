@@ -13,5 +13,5 @@ array2 = sorted(array2)
 end_time = time.time()
 sorted = end_time - start_time
 
-print(f'{sort}is time for 10000000 array for sort()')
-print(f'{sorted}is time for 10000000 array for sorted()')
+print(f'{sort}is time for 100000000 array for sort()')
+print(f'{sorted}is time for 100000000 array for sorted()')
